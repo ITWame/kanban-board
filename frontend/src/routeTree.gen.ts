@@ -10,12 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as LoginRouteImport } from './routes/login'
+import { Route as LoginSplatRouteImport } from './routes/login/$'
+import { Route as RegisterSplatRouteImport } from './routes/register/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -23,40 +30,60 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const LoginSplatRoute = LoginSplatRouteImport.update({
+  id: '/login/$',
+  path: '/login/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterSplatRoute = RegisterSplatRouteImport.update({
+  id: '/register/$',
+  path: '/register/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
-  '/login': typeof LoginRoute
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
-  '/login': typeof LoginRoute
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
-  '/login': typeof LoginRoute
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/forgot-password' | '/login'
+  fullPaths:
+    '/' | '/dashboard' | '/forgot-password' | '/login/$' | '/register/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forgot-password' | '/login'
-  id: '__root__' | '/' | '/forgot-password' | '/login'
+  to: '/' | '/dashboard' | '/forgot-password' | '/login/$' | '/register/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/forgot-password'
+    | '/login/$'
+    | '/register/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
-  LoginRoute: typeof LoginRoute
+  LoginSplatRoute: typeof LoginSplatRoute
+  RegisterSplatRoute: typeof RegisterSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/forgot-password': {
       id: '/forgot-password'
       path: '/forgot-password'
@@ -75,11 +109,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/login/$': {
+      id: '/login/$'
+      path: '/login/$'
+      fullPath: '/login/$'
+      preLoaderRoute: typeof LoginSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register/$': {
+      id: '/register/$'
+      path: '/register/$'
+      fullPath: '/register/$'
+      preLoaderRoute: typeof RegisterSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -87,18 +128,21 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
-  LoginRoute: LoginRoute,
+  LoginSplatRoute: LoginSplatRoute,
+  RegisterSplatRoute: RegisterSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

@@ -1,16 +1,21 @@
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupButton } from "@/src/components/ui/input-group"
-import { useState } from "react"
-import { FieldPath, FieldValues, UseFormRegister } from "react-hook-form"
-import {Eye, EyeOff} from "lucide-react"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupButton,
+} from "@/src/components/ui/input-group";
+import { useState } from "react";
+import { FieldPath, FieldValues, UseFormRegister } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 
 interface FormFieldProps<T extends FieldValues = FieldValues> {
-  id: string
-  name: FieldPath<T>
-  type?: "email" | "password"
-  placeholder: string
-  error?: string
-  icon: React.ReactNode
-  register: UseFormRegister<T>
+  id: string;
+  name: FieldPath<T>;
+  type?: "email" | "password";
+  placeholder: string;
+  error?: string;
+  icon: React.ReactNode;
+  register: UseFormRegister<T>;
 }
 
 function FormField<T extends FieldValues = FieldValues>({
@@ -22,7 +27,7 @@ function FormField<T extends FieldValues = FieldValues>({
   placeholder,
   register,
 }: FormFieldProps<T>) {
-  const [toggleShowPassword, setToggleShowPassword] = useState<boolean>(false)
+  const [toggleShowPassword, setToggleShowPassword] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col gap-2">
@@ -33,7 +38,7 @@ function FormField<T extends FieldValues = FieldValues>({
           type={
             type === "password"
               ? toggleShowPassword
-                ? "email"
+                ? "text"
                 : "password"
               : type
           }
@@ -60,7 +65,7 @@ function FormField<T extends FieldValues = FieldValues>({
         <p className="mt-2 text-sm font-medium text-destructive">{error}</p>
       )}
     </div>
-  )
+  );
 }
 
-export default FormField
+export default FormField;
