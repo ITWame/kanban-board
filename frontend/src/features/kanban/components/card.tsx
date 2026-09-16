@@ -7,9 +7,10 @@ import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import { Calendar, Ellipsis } from "lucide-react";
 import { useSortable } from "@dnd-kit/react/sortable";
+import { UUID } from "node:crypto";
 
 interface CardProps {
-  id: number;
+  id: UUID;
   index: number;
   priority: string;
   title: string;
@@ -20,8 +21,8 @@ function Card({ priority, title, description, id, index }: CardProps) {
   const { ref, isDragging } = useSortable({
     id,
     index,
-    type: "task",
-    accept: "task",
+    type: "issue",
+    accept: "issue",
     group: "column",
   });
 
@@ -33,7 +34,7 @@ function Card({ priority, title, description, id, index }: CardProps) {
     >
       <div className="flex justify-between items-center">
         <Badge variant="destructive" className="rounded-sm">
-          {priority}
+          {priority.charAt(0).toUpperCase() + priority.slice(1)}
         </Badge>
         <Button variant={"ghost"}>
           <Ellipsis />
@@ -49,9 +50,6 @@ function Card({ priority, title, description, id, index }: CardProps) {
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          {/*  <p className="text-sm text-muted-foreground font-light">
-                      Jerry Tommy
-                    </p> */}
         </div>
         <div className="flex gap-2 items-center text-muted-foreground">
           <Calendar size={20} />
