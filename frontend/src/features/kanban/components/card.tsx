@@ -16,15 +16,16 @@ interface CardProps {
   priority: string;
   title: string;
   description: string;
+  column: string;
 }
 
-function Card({ priority, title, description, id, index }: CardProps) {
+function Card({ priority, title, description, id, index, column }: CardProps) {
   const { ref, isDragging } = useSortable({
     id,
     index,
     type: "issue",
     accept: "issue",
-    group: "column",
+    group: column,
   });
 
   return (

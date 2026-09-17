@@ -40,9 +40,17 @@ interface ColumnProps {
   title: string;
   issues: Issue[];
   onAddIssue: (data: Omit<Issue, "id">) => void;
+  column: string;
 }
 
-function Column({ issues, borderColor, title, id, onAddIssue }: ColumnProps) {
+function Column({
+  column,
+  issues,
+  borderColor,
+  title,
+  id,
+  onAddIssue,
+}: ColumnProps) {
   const [open, setOpen] = useState(false);
 
   const { ref } = useDroppable({
@@ -203,6 +211,7 @@ function Column({ issues, borderColor, title, id, onAddIssue }: ColumnProps) {
           <Card
             key={issue.id}
             id={issue.id}
+            column={column}
             index={index}
             title={issue.title}
             priority={issue.priority}

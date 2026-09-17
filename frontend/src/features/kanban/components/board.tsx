@@ -7,6 +7,8 @@ import useGetIssues from "../hooks/use-get-issues";
 import { Issue } from "../types/issue";
 import useAddIssue from "../hooks/use-add-issue";
 import useUpdateStatus from "../hooks/use-update-status";
+import { isSortable } from "@dnd-kit/react/sortable";
+import { UUID } from "node:crypto";
 
 function Board() {
   const [issues, setIssues] = useState<Record<string, Issue[]>>();
@@ -38,17 +40,6 @@ function Board() {
   }, [data]);
 
   if (issues) {
-    const handleDragEnd = (id: string | number) => {
-      for (const [column, listOfIssues] of Object.entries(issues)) {
-        listOfIssues.forEach(async (issue) => {
-          if (issue.id === id) {
-            await updateStatus.mutateAsync({ id, status: column });
-            return;
-          }
-        });
-      }
-    };
-
     return (
       <DragDropProvider
         onDragOver={(event) => {
@@ -57,9 +48,17 @@ function Board() {
             return move(prevIssues, event) as Record<string, Issue[]>;
           });
         }}
-        onDragEnd={({ operation }) => {
-          if (operation.source) {
-            handleDragEnd(operation.source.id);
+        onDragEnd={async ({ operation }) => {
+          const { source } = operation;
+          if (source) {
+            if (isSortable(source)) {
+              if (source.id && source.group) {
+                await updateStatus.mutateAsync({
+                  id: source.id.toString() as UUID,
+                  status: source.group?.toString(),
+                });
+              }
+            }
           }
         }}
       >
@@ -67,8 +66,9 @@ function Board() {
           {Object.entries(issues).map(([column, issues]) => (
             <Column
               key={STATUS_CONFIG[column].title}
-              borderColor={STATUS_CONFIG[column].color}
               title={STATUS_CONFIG[column].title}
+              column={column}
+              borderColor={STATUS_CONFIG[column].color}
               id={column}
               issues={issues}
               onAddIssue={async (data) => addIssue.mutateAsync(data)}
