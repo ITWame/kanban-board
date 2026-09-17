@@ -80,6 +80,7 @@ function Column({
       title: data.title,
     };
     onAddIssue(issue);
+    form.reset();
     setOpen(false);
   };
 
