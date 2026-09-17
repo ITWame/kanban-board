@@ -115,19 +115,17 @@ function Column({
         <DialogFormContent title={title} form={form} onSubmit={onSubmit} />
       </Dialog>
       {issues.map((issue, index) => (
-        <>
-          <Card
-            key={issue.id}
-            id={issue.id}
-            column={column}
-            index={index}
-            title={issue.title}
-            priority={issue.priority}
-            description={issue.description}
-            onDeleteIssue={onDeleteIssue}
-            onUpdateIssue={onUpdateIssue}
-          />
-        </>
+        <Card
+          key={issue.id}
+          id={issue.id}
+          column={column}
+          index={index}
+          title={issue.title}
+          priority={issue.priority}
+          description={issue.description}
+          onDeleteIssue={onDeleteIssue}
+          onUpdateIssue={onUpdateIssue}
+        />
       ))}
     </div>
   );
