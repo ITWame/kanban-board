@@ -97,7 +97,7 @@ function SingInForm({ signIn }: SignInFormProps) {
         <FormField
           id="password"
           name="password"
-          placeholder="Adgangskode"
+          placeholder="Password"
           type="password"
           error={errors.password?.message}
           icon={<Lock className="size-4.5" />}
@@ -110,13 +110,13 @@ function SingInForm({ signIn }: SignInFormProps) {
               variant={"link"}
               className={"text-indigo-600"}
             >
-              Glemt adgangskode?
+              Forgot password?
             </Button>
           </Link>
         </div>
       </div>
       <Button type="submit" size={"2xl"}>
-        Log på
+        Log in
       </Button>
     </form>
   );

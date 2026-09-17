@@ -27,8 +27,8 @@ function CollectEmailForm({ onSubmit }: CollectEmailFormProps) {
   return (
     <AuthContainer>
       <Header
-        title="Glemt Adgangskoden?"
-        subtitle="Indtast den e-mailadresse, du brugte til at tilmelde dig, så sender vi dig en engangskode så du kan nulstille din adgangskode."
+        title="Forgot your password?"
+        subtitle="Enter the email address you used to sign up, and we will send you a one-time code so you can reset your password."
       />
       <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
         <FormField
@@ -41,11 +41,11 @@ function CollectEmailForm({ onSubmit }: CollectEmailFormProps) {
           register={register}
         />
         <Button type="submit" size={"2xl"}>
-          Godkend Email
+          Approve Email
         </Button>
       </form>
       <Footer
-        text={"Kan du huske din adgangskode"}
+        text={"Do you remember your password?"}
         href={"/login"}
         hrefText={"Login"}
       />

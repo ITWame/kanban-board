@@ -68,10 +68,10 @@ function Login() {
 
   return (
     <AuthContainer>
-      <Header title="Velkommen!👋" subtitle="Log ind på din konto" />
+      <Header title="Welcome!👋" subtitle="Log in to your account" />
       <SingInForm signIn={signIn} />
       <Footer
-        text={"Har du ikke en konto?"}
+        text={"Don't you have an account?"}
         href={"/register"}
         hrefText={"Register"}
       />

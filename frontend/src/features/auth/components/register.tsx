@@ -81,10 +81,10 @@ function Register() {
 
   return (
     <AuthContainer>
-      <Header title="Kom igang" subtitle="Opret én ny konto" />
+      <Header title="KGet Started" subtitle="Create a new account" />
       <SignUpForm signUp={signUp} fetchStatus={fetchStatus} />
       <Footer
-        text={"Har du allerede en konto?"}
+        text={"Do you already have an account?"}
         href={"/login"}
         hrefText={"Login"}
       />

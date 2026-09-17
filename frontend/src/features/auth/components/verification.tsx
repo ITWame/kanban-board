@@ -6,11 +6,6 @@ import {
   InputOTPSlot,
 } from "@/src/components/ui/input-otp";
 import { Spinner } from "@/src/components/ui/spinner";
-import {
-  SignUpErrors,
-  SignUpFutureResource,
-} from "@clerk/tanstack-react-start/types";
-import { useNavigate } from "@tanstack/react-router";
 import { BadgeCheck } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { ClerkAPIError } from "@clerk/tanstack-react-start/types";
@@ -46,20 +41,20 @@ function Verfication({
       </div>
       <div className="flex flex-col gap-2 text-center">
         <h1 className="text-3xl font-bold text-card-foreground">
-          Tjek din email
+          Check your email
         </h1>{" "}
         {emailAddress ? (
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Vi har sendt en bekræftelseskode til{" "}
+            We have sent a confirmation code to{" "}
             <span className="font-semibold text-card-foreground">
               {emailAddress}
             </span>
-            . Indtast koden nedenfor.
+            . Enter the code below.
           </p>
         ) : (
           <p>
-            Vi har sendt en bekræftelseskode til den email du prøvede at login
-            ind med. Indtast koden nedenfor.
+            We have sent a confirmation code to the email address you used to
+            log in. Please enter the code below.
           </p>
         )}
       </div>
@@ -85,16 +80,16 @@ function Verfication({
           {isFetching ? (
             <>
               <Spinner />
-              <span>Bekræfter...</span>
+              <span>Confirming...</span>
             </>
           ) : (
-            "Bekræft"
+            "Confirm"
           )}
         </Button>
 
         <div className="text-center">
           <span className="text-sm text-muted-foreground">
-            Har du ikke modtaget en bekræftelseskode i din mail?{" "}
+            Haven't you received a confirmation code in your email?{" "}
           </span>
           <Button
             type="button"
@@ -103,7 +98,7 @@ function Verfication({
             onClick={onResendCode}
             disabled={isFetching}
           >
-            Send ny kode
+            Send new code
           </Button>
         </div>
       </div>

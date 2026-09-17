@@ -34,10 +34,7 @@ function ResetPasswordForm({ onSubmit, isFetching }: ResetPasswordFormProps) {
 
   return (
     <AuthContainer>
-      <Header
-        title="Nustil din adgangskode"
-        subtitle="Indtast en ny adgangskode."
-      />
+      <Header title="Reset your password" subtitle="Enter a new password." />
       <form
         className="flex flex-col gap-4"
         onSubmit={handleSubmit((formData) => onSubmit(formData, setError))}
@@ -50,7 +47,7 @@ function ResetPasswordForm({ onSubmit, isFetching }: ResetPasswordFormProps) {
         <FormField
           id="password"
           name="newPassword"
-          placeholder="Ny adgangskode"
+          placeholder="New password"
           type="password"
           error={errors.newPassword?.message}
           icon={<Lock className="size-4.5" />}
@@ -59,14 +56,14 @@ function ResetPasswordForm({ onSubmit, isFetching }: ResetPasswordFormProps) {
         <FormField
           id="password"
           name="confirmPassword"
-          placeholder="Bekræftelse af adgangskode"
+          placeholder="Password confirmation"
           type="password"
           error={errors.confirmPassword?.message}
           icon={<Lock className="size-4.5" />}
           register={register}
         />
         <Button type="submit" size={"2xl"} disabled={isFetching}>
-          {isFetching && <Spinner />} Nustil adgangskode
+          {isFetching && <Spinner />} Reset password
         </Button>
       </form>
     </AuthContainer>

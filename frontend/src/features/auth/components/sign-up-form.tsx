@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { SignUpFormData, signUpSchema } from "../schemas/zod";
 import FormField from "./form-field";
@@ -6,10 +5,7 @@ import { Mail, Lock } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, AlertDescription } from "@/src/components/ui/alert";
-import type {
-  SignUpErrors,
-  SignUpFutureResource,
-} from "@clerk/tanstack-react-start/types";
+import type { SignUpFutureResource } from "@clerk/tanstack-react-start/types";
 
 interface SignUpFormProps {
   signUp: SignUpFutureResource;
@@ -69,7 +65,7 @@ function SignUpForm({ signUp }: SignUpFormProps) {
         <FormField
           id="password"
           name="password"
-          placeholder="Adgangskode"
+          placeholder="Password"
           type="password"
           error={errors.password?.message}
           icon={<Lock className="size-4.5" />}
@@ -80,7 +76,7 @@ function SignUpForm({ signUp }: SignUpFormProps) {
         <div id="clerk-captcha" />
       </div>
       <Button type="submit" size={"2xl"}>
-        Tilmeld Dig
+        Sign Up
       </Button>
     </form>
   );

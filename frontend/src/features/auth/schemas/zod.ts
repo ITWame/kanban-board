@@ -1,42 +1,42 @@
 import { z } from "zod";
 
 export const signUpSchema = z.object({
-  email: z.email("Indtast venligst en gyldig e-mailadresse"),
+  email: z.email("Please enter a valid email address."),
   password: z
     .string()
-    .min(1, "Adgangskode er påkrævet")
-    .min(8, "Adgangskoden skal være mindst 8 tegn lang")
+    .min(1, "Password is required")
+    .min(8, "The password must be at least 8 characters long.")
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Adgangskoden skal indeholde mindst ét stort bogstav, ét lille bogstav og ét tal",
+      "The password must contain at least one uppercase letter, one lowercase letter, and one number.",
     ),
 });
 
 export const signInSchema = z.object({
-  email: z.email("Indtast venligst en gyldig e-mailadresse"),
-  password: z.string().min(1, "Adgangskode er påkrævet"),
+  email: z.email("Please enter a valid email address."),
+  password: z.string().min(1, "Password is required"),
 });
 
 export const forgotPasswordSchema = z.object({
-  email: z.email("Indtast venligst en gyldig e-mailadresse"),
+  email: z.email("Please enter a valid email address."),
 });
 
 export const resetPasswordSchema = z
   .object({
     newPassword: z
       .string()
-      .min(1, "Ny adgangskode er påkrævet")
-      .min(8, "Ny adgangskoden skal være mindst 8 tegn lang")
+      .min(1, "New password is required")
+      .min(8, "The new password must be at least 8 characters long.")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        "Ny adgangskode skal indeholde mindst ét stort bogstav, ét lille bogstav og ét tal",
+        "The new password must contain at least one uppercase letter, one lowercase letter, and one number.",
       ),
     confirmPassword: z
       .string()
-      .min(1, "Bekræftelse af adgangskode er påkrævet"),
+      .min(1, "Password confirmation is required."),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Adganskoderne skal matche",
+    message: "The passwords must match",
     path: ["confirmPassword"],
   });
 
