@@ -8,6 +8,7 @@ import { Button } from "@/src/components/ui/button";
 import { Calendar, Ellipsis } from "lucide-react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { UUID } from "node:crypto";
+import { useState } from "react";
 
 interface CardProps {
   id: UUID;
@@ -33,7 +34,10 @@ function Card({ priority, title, description, id, index }: CardProps) {
       className="bg-card rounded-lg p-4 border-border border flex flex-col cursor-grab z-40"
     >
       <div className="flex justify-between items-center">
-        <Badge variant="destructive" className="rounded-sm">
+        <Badge
+          variant={`${priority === "high" ? "destructive" : priority === "medium" ? "warning" : "success"}`}
+          className="rounded-sm"
+        >
           {priority.charAt(0).toUpperCase() + priority.slice(1)}
         </Badge>
         <Button variant={"ghost"}>
