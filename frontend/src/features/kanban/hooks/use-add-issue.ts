@@ -31,7 +31,7 @@ function useAddIssue() {
 
             return {previusIssues}
         },
-        onError: (err, variables, context) => {
+        onError: (_err, _variables, context) => {
             if(context?.previusIssues) {
                 queryClient.setQueryData<Issue[]>(['issues'], context.previusIssues)
             }

@@ -6,12 +6,15 @@ import { STATUS_CONFIG } from "../configs/status";
 import useGetIssues from "../hooks/use-get-issues";
 import { Issue } from "../types/issue";
 import useAddIssue from "../hooks/use-add-issue";
+import useUpdateStatus from "../hooks/use-update-status";
 
 function Board() {
   const [issues, setIssues] = useState<Record<string, Issue[]>>();
 
   const { data } = useGetIssues();
+
   const addIssue = useAddIssue();
+  const updateStatus = useUpdateStatus();
 
   useEffect(() => {
     if (data.data) {
@@ -35,6 +38,17 @@ function Board() {
   }, [data]);
 
   if (issues) {
+    const handleDragEnd = (id: string | number) => {
+      for (const [column, listOfIssues] of Object.entries(issues)) {
+        listOfIssues.forEach(async (issue) => {
+          if (issue.id === id) {
+            await updateStatus.mutateAsync({ id, status: column });
+            return;
+          }
+        });
+      }
+    };
+
     return (
       <DragDropProvider
         onDragOver={(event) => {
@@ -42,6 +56,11 @@ function Board() {
             if (!prevIssues) return prevIssues;
             return move(prevIssues, event) as Record<string, Issue[]>;
           });
+        }}
+        onDragEnd={({ operation }) => {
+          if (operation.source) {
+            handleDragEnd(operation.source.id);
+          }
         }}
       >
         <div className="grid grid-cols-4 gap-4 p-6 flex-1 min-h-0 overflow-x-auto">
