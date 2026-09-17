@@ -5,10 +5,16 @@ import {
 } from "@/src/components/ui/avatar";
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
-import { Calendar, Ellipsis } from "lucide-react";
+import { Calendar, Ellipsis, Trash, UserIcon } from "lucide-react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { UUID } from "node:crypto";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/src/components/ui/dropdown-menu";
 
 interface CardProps {
   id: UUID;
@@ -17,9 +23,18 @@ interface CardProps {
   title: string;
   description: string;
   column: string;
+  onDeleteIssue: (id: UUID) => void;
 }
 
-function Card({ priority, title, description, id, index, column }: CardProps) {
+function Card({
+  priority,
+  title,
+  description,
+  id,
+  index,
+  column,
+  onDeleteIssue,
+}: CardProps) {
   const { ref, isDragging } = useSortable({
     id,
     index,
@@ -41,9 +56,24 @@ function Card({ priority, title, description, id, index, column }: CardProps) {
         >
           {priority.charAt(0).toUpperCase() + priority.slice(1)}
         </Badge>
-        <Button variant={"ghost"}>
-          <Ellipsis />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button variant={"ghost"}>
+                <Ellipsis />
+              </Button>
+            }
+          />
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={() => onDeleteIssue(id)}
+            >
+              <Trash />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="flex flex-col gap-2 py-4">
         <div className="font-bold">{title}</div>

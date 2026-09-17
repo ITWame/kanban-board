@@ -33,6 +33,7 @@ import {
   FieldGroup,
   FieldSet,
 } from "@/src/components/ui/field";
+import { UUID } from "node:crypto";
 
 interface ColumnProps {
   id: string;
@@ -40,6 +41,7 @@ interface ColumnProps {
   title: string;
   issues: Issue[];
   onAddIssue: (data: Omit<Issue, "id">) => void;
+  onDeleteIssue: (id: UUID) => void;
   column: string;
 }
 
@@ -50,6 +52,7 @@ function Column({
   title,
   id,
   onAddIssue,
+  onDeleteIssue,
 }: ColumnProps) {
   const [open, setOpen] = useState(false);
 
@@ -216,6 +219,7 @@ function Column({
             title={issue.title}
             priority={issue.priority}
             description={issue.description}
+            onDeleteIssue={onDeleteIssue}
           />
         </>
       ))}

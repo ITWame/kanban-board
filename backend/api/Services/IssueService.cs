@@ -25,7 +25,9 @@ namespace api.Services
 
         public async Task DeleteIssueAsync(Guid id)
         {
-            await _issueRepository.DeleteIssueAsync(id);
+            var issue = await _issueRepository.GetIssueByIdAsync(id) ?? throw new KeyNotFoundException("Issue not found");
+
+            await _issueRepository.DeleteIssueAsync(issue);
 
             await _issueRepository.Save();
         }

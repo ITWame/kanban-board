@@ -9,6 +9,7 @@ import useAddIssue from "../hooks/use-add-issue";
 import useUpdateStatus from "../hooks/use-update-status";
 import { isSortable } from "@dnd-kit/react/sortable";
 import { UUID } from "node:crypto";
+import useDeleteIssue from "../hooks/use-delete-issue";
 
 function Board() {
   const [issues, setIssues] = useState<Record<string, Issue[]>>();
@@ -17,6 +18,7 @@ function Board() {
 
   const addIssue = useAddIssue();
   const updateStatus = useUpdateStatus();
+  const deleteIssue = useDeleteIssue();
 
   useEffect(() => {
     if (data.data) {
@@ -71,7 +73,8 @@ function Board() {
               borderColor={STATUS_CONFIG[column].color}
               id={column}
               issues={issues}
-              onAddIssue={async (data) => addIssue.mutateAsync(data)}
+              onAddIssue={async (data) => await addIssue.mutateAsync(data)}
+              onDeleteIssue={async (id) => await deleteIssue.mutateAsync(id)}
             />
           ))}
         </div>

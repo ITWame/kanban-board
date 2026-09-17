@@ -20,14 +20,9 @@ namespace api.Repositories
             await _context.Issues.AddAsync(issue);
         }
 
-        public async Task DeleteIssueAsync(Guid id)
+        public async Task DeleteIssueAsync(Issue issue)
         {
-            var task = await _context.Issues.FindAsync(id);
-
-            if (task != null)
-            {
-                _context.Remove(task);
-            }
+            _context.Remove(issue);
         }
 
 

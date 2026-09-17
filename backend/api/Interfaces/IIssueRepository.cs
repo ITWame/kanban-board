@@ -9,7 +9,7 @@ namespace api.Interfaces
         Task AddIssueAsync(Issue issue);
         Task UpdateIssueAsync(Issue issue);
         Task UpdateStatusAsync(Issue issue);
-        Task DeleteIssueAsync(Guid id);
+        Task DeleteIssueAsync(Issue issue);
         Task Save();
     }
 }

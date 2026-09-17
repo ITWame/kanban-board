@@ -60,5 +60,19 @@ namespace api
                 return NotFound();
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _issueService.DeleteIssueAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
