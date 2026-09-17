@@ -4,7 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { auth } from "@clerk/tanstack-react-start/server";
 import { useClerk } from "@clerk/tanstack-react-start";
 import { Button } from "../components/ui/button";
-import { HomeIcon, House, Plus, PlusIcon } from "lucide-react";
+import { HomeIcon, House, LogOut, Plus, PlusIcon } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -44,12 +44,15 @@ function Home() {
     <div className="flex h-screen overflow-hidden">
       <div className="w-20 flex flex-col py-8 items-center gap-16 shrink-0">
         <img src="/icon.svg" height={40} width={40} />
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 justify-between h-full">
           <div className="bg-indigo-600 w-10 h-10 rounded-full items-center flex justify-center">
             <House />
           </div>
-          <div className="w-10 h-10 rounded-full items-center flex justify-center border border-input border-dashed hover:bg-white/5 cursor-pointer">
-            <Plus />
+          <div
+            className="cursor-pointer w-10 h-10 rounded-full items-center flex justify-center hover:bg-destructive/10 hover:text-destructive hover:focus-visible:ring-destructive/20 hove:dark:bg-destructive/20 hover:dark:focus-visible:ring-destructive/40"
+            onClick={() => signOut({ redirectUrl: "/login" })}
+          >
+            <LogOut />
           </div>
         </div>
       </div>
