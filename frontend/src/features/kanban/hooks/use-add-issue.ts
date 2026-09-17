@@ -20,8 +20,8 @@ function useAddIssue() {
             const createdIssue: Issue = {
                 id: crypto.randomUUID(),
                 description: newIssue.description,
-                priority: newIssue.priority.toLowerCase(),
-                status: newIssue.status.toLowerCase(),
+                priority: newIssue.priority,
+                status: newIssue.status,
                 title: newIssue.title
             }
 

@@ -49,14 +49,9 @@ namespace api.Services
             return issue;
         }
 
-        public async Task<string> UpdateIssueAsync(Guid id, IssueDTO issueDTO)
+        public async Task UpdateIssueAsync(Guid id, IssueDTO issueDTO)
         {
-            var issue = await _issueRepository.GetIssueByIdAsync(id);
-
-            if (issue == null)
-            {
-                return "Could not find the issue";
-            }
+            var issue = await _issueRepository.GetIssueByIdAsync(id) ?? throw new KeyNotFoundException("Issue not found");
 
             issue.Priority = issueDTO.Priority;
             issue.Status = issueDTO.Status;
@@ -66,8 +61,6 @@ namespace api.Services
             await _issueRepository.UpdateIssueAsync(issue);
 
             await _issueRepository.Save();
-
-            return "Successfully updated the issue";
         }
 
         public async Task UpdateStatus(Guid id, string status)

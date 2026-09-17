@@ -5,7 +5,7 @@ import {
 } from "@/src/components/ui/avatar";
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
-import { Calendar, Ellipsis, Trash, UserIcon } from "lucide-react";
+import { Calendar, Edit, Ellipsis, Trash } from "lucide-react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { UUID } from "node:crypto";
 import { useState } from "react";
@@ -15,6 +15,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import DialogFormContent from "./dialog-form-content";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { formSchema } from "../schemas/zod";
+import z from "zod";
+import { Issue } from "../types/issue";
+import { Dialog } from "@/src/components/ui/dialog";
 
 interface CardProps {
   id: UUID;
@@ -24,6 +31,7 @@ interface CardProps {
   description: string;
   column: string;
   onDeleteIssue: (id: UUID) => void;
+  onUpdateIssue: (updatedIssue: Issue) => void;
 }
 
 function Card({
@@ -34,7 +42,10 @@ function Card({
   index,
   column,
   onDeleteIssue,
+  onUpdateIssue,
 }: CardProps) {
+  const [open, setOpen] = useState(false);
+
   const { ref, isDragging } = useSortable({
     id,
     index,
@@ -43,15 +54,41 @@ function Card({
     group: column,
   });
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: title,
+      description: description,
+      status: column,
+      priority: priority,
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const issue: Issue = {
+      id,
+      description: data.description,
+      priority: data.priority,
+      status: data.status,
+      title: data.title,
+    };
+    onUpdateIssue(issue);
+    form.reset();
+    setOpen(false);
+  };
+
   return (
     <div
       ref={ref}
       data-dragging={isDragging}
-      className="bg-card rounded-lg p-4 border-border border flex flex-col cursor-grab z-40"
+      className="bg-card rounded-lg p-4 border-border border flex flex-col cursor-grab z-40 hover:cursor-pointer"
     >
+      <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+        <DialogFormContent title={column} form={form} onSubmit={onSubmit} />
+      </Dialog>
       <div className="flex justify-between items-center">
         <Badge
-          variant={`${priority === "high" ? "destructive" : priority === "medium" ? "warning" : "success"}`}
+          variant={`${priority === "High" ? "destructive" : priority === "Medium" ? "warning" : "success"}`}
           className="rounded-sm"
         >
           {priority.charAt(0).toUpperCase() + priority.slice(1)}
@@ -65,6 +102,10 @@ function Card({
             }
           />
           <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => setOpen(!open)}>
+              <Edit />
+              Edit
+            </DropdownMenuItem>
             <DropdownMenuItem
               variant="destructive"
               onClick={() => onDeleteIssue(id)}

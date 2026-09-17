@@ -10,7 +10,6 @@ import { Check, User } from "lucide-react";
 import { useState } from "react";
 
 interface StatusSelectProps {
-  defaultValue: string;
   name: string;
   value: string;
   onValuChange: () => void;
@@ -24,13 +23,11 @@ function StatusSelect({
   ariaInvalid,
 }: StatusSelectProps) {
   const status = [
-    { label: "To Do", color: "border-orange-500", value: "to do" },
-    { label: "In Progress", color: "border-blue-500", value: "in progress" },
-    { label: "Review", color: "border-yellow-500", value: "review" },
-    { label: "Done", color: "border-green-500", value: "done" },
+    { label: "To Do", color: "border-orange-500", value: "To Do" },
+    { label: "In Progress", color: "border-blue-500", value: "In Progress" },
+    { label: "Review", color: "border-yellow-500", value: "Review" },
+    { label: "Done", color: "border-green-500", value: "Done" },
   ];
-
-  console.log(value);
 
   return (
     <Select name={name} value={value} onValueChange={onValuChange}>
@@ -38,7 +35,7 @@ function StatusSelect({
         <div className="flex items-center gap-1.5">
           {value ? (
             <span
-              className={`rounded-full border-2 ${status.filter((item) => item.value === value.toLowerCase())[0].color} w-3 h-3`}
+              className={`rounded-full border-2 ${status.filter((item) => item.value === value)[0].color} w-3 h-3`}
             />
           ) : (
             <Check />

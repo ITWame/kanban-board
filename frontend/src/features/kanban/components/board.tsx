@@ -10,6 +10,8 @@ import useUpdateStatus from "../hooks/use-update-status";
 import { isSortable } from "@dnd-kit/react/sortable";
 import { UUID } from "node:crypto";
 import useDeleteIssue from "../hooks/use-delete-issue";
+import useUpdateIssue from "../hooks/use-update-issue";
+import { id } from "zod/v4/locales";
 
 function Board() {
   const [issues, setIssues] = useState<Record<string, Issue[]>>();
@@ -17,6 +19,7 @@ function Board() {
   const { data } = useGetIssues();
 
   const addIssue = useAddIssue();
+  const updateIssue = useUpdateIssue();
   const updateStatus = useUpdateStatus();
   const deleteIssue = useDeleteIssue();
 
@@ -31,7 +34,7 @@ function Board() {
           column[issue.status].push(issue);
           return column;
         },
-        { "to do": [], "in progress": [], review: [], done: [] } as Record<
+        { "To Do": [], "In Progress": [], Review: [], Done: [] } as Record<
           string,
           Issue[]
         >,
@@ -75,6 +78,9 @@ function Board() {
               issues={issues}
               onAddIssue={async (data) => await addIssue.mutateAsync(data)}
               onDeleteIssue={async (id) => await deleteIssue.mutateAsync(id)}
+              onUpdateIssue={async (updatedIssue) =>
+                updateIssue.mutateAsync(updatedIssue)
+              }
             />
           ))}
         </div>

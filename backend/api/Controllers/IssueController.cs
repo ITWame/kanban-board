@@ -1,3 +1,4 @@
+using System.Globalization;
 using api.DTOs;
 using api.Interfaces;
 using api.Models;
@@ -45,6 +46,20 @@ namespace api
             var result = await _issueService.AddIssueAsync(issueDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, IssueDTO issueDTO)
+        {
+            try
+            {
+                await _issueService.UpdateIssueAsync(id, issueDTO);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPatch("{id}/status")]

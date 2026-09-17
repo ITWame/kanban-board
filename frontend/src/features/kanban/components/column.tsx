@@ -34,6 +34,7 @@ import {
   FieldSet,
 } from "@/src/components/ui/field";
 import { UUID } from "node:crypto";
+import DialogFormContent from "./dialog-form-content";
 
 interface ColumnProps {
   id: string;
@@ -42,6 +43,7 @@ interface ColumnProps {
   issues: Issue[];
   onAddIssue: (data: Omit<Issue, "id">) => void;
   onDeleteIssue: (id: UUID) => void;
+  onUpdateIssue: (updatedIssue: Issue) => void;
   column: string;
 }
 
@@ -53,6 +55,7 @@ function Column({
   id,
   onAddIssue,
   onDeleteIssue,
+  onUpdateIssue,
 }: ColumnProps) {
   const [open, setOpen] = useState(false);
 
@@ -75,8 +78,8 @@ function Column({
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     const issue: Omit<Issue, "id"> = {
       description: data.description,
-      priority: data.priority.toLowerCase(),
-      status: data.status.toLowerCase(),
+      priority: data.priority,
+      status: data.status,
       title: data.title,
     };
     onAddIssue(issue);
@@ -109,106 +112,7 @@ function Column({
         >
           <PlusIcon />
         </Button>
-        <DialogContent className={"min-w-lg"}>
-          <DialogHeader>
-            <DialogTitle>Add Issue</DialogTitle>
-            <DialogDescription>
-              Create a new issue for you or your team to work on.
-            </DialogDescription>
-          </DialogHeader>
-          <form id="form" onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldSet>
-              <FieldGroup>
-                <Controller
-                  name="title"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <InputGroup>
-                        <InputGroupInput
-                          {...field}
-                          aria-invalid={fieldState.invalid}
-                          placeholder="Title"
-                          autoComplete="off"
-                        />
-                      </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-                <Controller
-                  name="description"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <InputGroup>
-                        <InputGroupTextarea
-                          {...field}
-                          placeholder="Description"
-                          rows={6}
-                          className="min-h-24 resize-none"
-                          aria-invalid={fieldState.invalid}
-                        />
-                      </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-              <FieldGroup>
-                <div className="flex gap-2">
-                  <Controller
-                    name="status"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field aria-invalid={fieldState.invalid}>
-                        <StatusSelect
-                          name={field.name}
-                          value={field.value}
-                          onValuChange={field.onChange}
-                          ariaInvalid={fieldState.invalid}
-                          defaultValue={title}
-                        />
-                      </Field>
-                    )}
-                  />
-                  <Controller
-                    name="priority"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field aria-invalid={fieldState.invalid}>
-                        <PrioritySelect
-                          name={field.name}
-                          value={field.value}
-                          onValuChange={field.onChange}
-                          ariaInvalid={fieldState.invalid}
-                        />
-                      </Field>
-                    )}
-                  />
-                </div>
-              </FieldGroup>
-            </FieldSet>
-          </form>
-          <DialogFooter>
-            <Field orientation={"horizontal"} className="flex justify-end">
-              <Button
-                size={"xl"}
-                variant={"outline"}
-                onClick={() => form.reset()}
-              >
-                Reset
-              </Button>
-              <Button size={"xl"} type="submit" form="form">
-                Save
-              </Button>
-            </Field>
-          </DialogFooter>
-        </DialogContent>
+        <DialogFormContent title={title} form={form} onSubmit={onSubmit} />
       </Dialog>
       {issues.map((issue, index) => (
         <>
@@ -221,6 +125,7 @@ function Column({
             priority={issue.priority}
             description={issue.description}
             onDeleteIssue={onDeleteIssue}
+            onUpdateIssue={onUpdateIssue}
           />
         </>
       ))}
